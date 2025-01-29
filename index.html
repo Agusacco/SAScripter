@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="styles.css"></link>
+    <!-- <script src="index.js"></script> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SAScript</title>
+    <h1 id="SAScript">SAScript</h1>
+    
+
+</head>
+<body>
+
+    <div id="configuracion">
+
+        SAS <input type="checkbox" id="chkSAS" onclick="chkSASPressed()" checked>
+        <br>
+        PC-AGUSACCO <input type="checkbox" id="chkPC" onclick="chkPCPressed()">
+        <br>
+        <br>
+        <label id="tituloCarpeta">Nombre de carpeta:   </label><input type="text" id="nombreCarpeta">
+    
+    </div>
+
+    <div id="bAE">
+
+        <button name="añadir" class="button bAñadir">Añadir</button>
+        <button name="eliminar" class="button bEliminar">Eliminar</button>
+
+    </div>
+
+    <div id="scripts"></div>
+
+    <div id="log">
+
+        <textarea id="inputlog" disabled></textarea>
+
+    </div>
+
+    <script>
+
+        var arrayProcesos = [];
+        var contadorProcesos = 0;
+
+        var psTree = require('ps-tree');
+        var crearProceso = require('child_process');
+
+        document.querySelector(".bEliminar").disabled = true
+
+        var checkSAS = document.getElementById("chkSAS");
+        var checkPC =  document.getElementById("chkPC");
+        var comando = "cd C:/ & cd Users/Administrador/Desktop/Hosting/";
+
+        function chkSASPressed(){
+
+            comando = "cd C:/ & cd Users/Administrador/Desktop/Hosting/"
+
+            if(chkPC.checked){
+
+                checkPC.checked = false;
+                comando = "cd C:/ & cd Users/Administrador/Desktop/Hosting/"
+
+            }
+
+            else if (!chkSAS.checked){
+
+                checkPC.checked = true;
+                comando = "A: & cd "
+
+            }
+
+        }
+
+        function chkPCPressed(){
+
+            comando = "A: & cd "
+
+            if(chkSAS.checked){
+
+                checkSAS.checked = false;
+                comando = "A: & cd "
+
+            }
+
+            else if (!chkPC.checked){
+
+                checkSAS.checked = true;
+                comando = "cd C:/ & cd Users/Administrador/Desktop/Hosting/"
+
+            }
+
+        }
+
+        document.querySelector(".bAñadir").addEventListener("click", function(){
+
+            if(document.getElementById("nombreCarpeta").value == ""){
+
+                document.getElementById("inputlog").value += `No ingresaste una carpeta.\n`
+
+            }
+
+            else {
+
+                var btn = document.createElement("button")
+                btn.className = "button"
+
+                var nombreCarpeta = document.getElementById("nombreCarpeta").value;
+
+                document.getElementById("nombreCarpeta").value = "";
+                btn.innerHTML = nombreCarpeta
+                contadorProcesos++;
+
+                var proceso = crearProceso.exec(comando + nombreCarpeta +' & node bot.js', {detached: true}, 
+                    
+                    function (err,stdout,stderr) {
+                    if (err) {
+                        document.getElementById("inputlog").value += `stderr\n`;
+                    } else {
+                        document.getElementById("inputlog").value += `El bot ${nombreCarpeta} se esta ejecutando.\n`;
+                    }
+
+                });
+
+                proceso.on('close', (code, signal) => {
+                    document.getElementById("inputlog").value += `El script finalizo correctamente o finalizo debido a un error.\n`
+                });
+
+                proceso.on('exit', (code, signal) => {
+                    document.getElementById("inputlog").value += `El script finalizo.\n`
+                });
+
+                arrayProcesos.push(proceso);
+                btn.classList.add(contadorProcesos)
+
+                btn.addEventListener("click", function(){
+
+                    var numeroProceso = btn.classList.item(1)
+                    btn.remove();
+
+                    var pidProceso = arrayProcesos[numeroProceso-1].pid
+                    var proceso = arrayProcesos[numeroProceso-1]
+
+                    psTree(proceso.pid, function (err, children) {
+
+                        var pidNode = children.map(pidDisponibles => { return pidDisponibles.PID });
+                        pidNode = pidNode[1];
+
+                        document.getElementById("inputlog").value += pidNode + "\n";
+
+                        crearProceso.exec('taskkill /F /PID ' + pidNode, 
+                        
+                        function (err,stdout,stderr) {
+                            if (err) {
+                                document.getElementById("inputlog").value += stderr + "\n"
+                            } else {
+                                document.getElementById("inputlog").value += "El script " + nombreCarpeta + " ha finalizado." + "\n" + stdout;
+                            }
+                        });
+
+                    });
+
+                });
+
+                document.body.childNodes[6].appendChild(btn);
+                
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

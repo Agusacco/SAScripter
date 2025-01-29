@@ -1,0 +1,102 @@
+html{
+
+    align-content: center;
+    background-color: cornsilk;
+    min-width: 350px;
+    max-width: 470px;
+    
+}
+
+body {
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
+#SAScript{
+
+    text-align: center;
+    font-size: 500%;
+
+}
+
+.button{
+
+    align-content: center;
+    background-color: #9b9b9b;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-style: solid;
+    border-color: black;
+    border-radius: 0px;
+    border-width: 3px;
+
+    width: 13%;
+    font-size: 4vmin;
+
+    min-width: 126px;
+    min-height: 40px;
+
+    margin-left: 0.5%;
+    margin-top: 2px;
+
+}
+
+#bAE{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*height: 100%;*/
+    margin-top: 10px;
+
+}
+
+.bEliminar{
+
+    margin-left: 0.5%;
+
+}
+
+#scripts{
+
+    border-radius: 0px;
+    border-color: black;
+    border-style: solid;
+    border-width: 5px;
+
+    margin-top: 2%;
+    margin-bottom: 2%;
+
+    padding: 10px;
+
+}
+
+#configuracion{
+
+    margin-top: -50px;
+
+}
+
+#nombreCarpeta{
+
+    width: 50%;
+    text-align: center;
+
+}
+
+#tituloCarpeta, #nombreCarpeta{
+    
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+#inputlog{
+
+    width: 97%;
+    margin-bottom: 18%;
+    height: 120px;
+
+}
+
+
+

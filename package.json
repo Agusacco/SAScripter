@@ -1,0 +1,22 @@
+{
+  "name": "sascripter",
+  "version": "1.0.0",
+  "description": "A JavaScript executor for SAS",
+  "main": "index.js",
+  "dependencies": {
+    "electron": "^9.0.5",
+    "electron-debug": "^3.1.0",
+    "electron-reload": "^1.5.0",
+    "ps-tree": "^1.2.0"
+  },
+  "devDependencies": {
+    "electron-packager": "^15.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron index.js",
+    "build": "electron-packager ./ SAScripter --platform=win32 --overwrite"
+  },
+  "author": "Agusacco",
+  "license": "ISC"
+}
